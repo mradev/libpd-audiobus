@@ -15,11 +15,13 @@
 #import "AudioHelpers.h"
 #import "ViewController.h"
 
-//Unique, get a temporary registration from http://developer.audiob.us/temporary-registration
+//This must be unique, get a temporary registration from http://developer.audiob.us/temporary-registration
 static NSString *const AUDIOBUS_API_KEY = @"MTM5NDEwOTc4MioqKkF1ZGlvQnVzbGlicGQqKipBdWRpb0J1c2xpYnBkLmF1ZGlvYnVzOi8v:Tf6vImI3uGLmGany/kcEQkJEdQSpFiZYWI4TF4MdjbFJaGKKzDN9YKXUC8a1vt7GxSFsMEJXi1EfDSKHRr9ICABTiJHwunkXu5ENXN16TKvGaM8g3naih+lZPRqALGW/";
 static NSString *const PD_PATCH = @"Test_Patch.pd";
 
+//change your URL Scheme too
 static NSString *const AUDIOBUS_URL_SCHEME = @"AudioBuslibpd.audiobus://";
+
 static NSString *const AUDIOBUS_INPUTPORT = @"Main-Input";
 static NSString *const AUDIOBUS_OUTPUTPORT = @"Main-Output";
 static NSString *const AUDIOBUS_INPUT_DESCRIPTION = @"Main App Input";
@@ -28,7 +30,7 @@ static NSString *const AUDIOBUS_FILTER_TITLE = @"Pd-Filter";
 static NSString *const AUDIOBUS_FILTERPORT_NAME = @"Main Filter";
 
 static float const SAMPLE_RATE = 44100;
-static int const TICKS_PER_BUFFER = 8;//minimum libpd will allow, also what filter sets
+static int const TICKS_PER_BUFFER = 8;//filter runs at this
 
 
 

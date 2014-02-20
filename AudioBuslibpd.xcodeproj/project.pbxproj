@@ -646,6 +646,7 @@
 				2EB524F618B4FEBD00411BF1 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		2EB524F718B4FEBD00411BF1 /* Build configuration list for PBXNativeTarget "AudioBuslibpdTests" */ = {
 			isa = XCConfigurationList;
@@ -654,6 +655,7 @@
 				2EB524F918B4FEBD00411BF1 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
