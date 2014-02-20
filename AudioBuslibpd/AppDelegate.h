@@ -7,10 +7,12 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "ViewController.h"
 
 @interface AppDelegate : UIResponder <UIApplicationDelegate>
 
 @property (strong, nonatomic) UIWindow *window;
 @property (readonly, nonatomic)NSInteger ticks;
+@property (strong,nonatomic)ViewController *rootController;
 
 @end

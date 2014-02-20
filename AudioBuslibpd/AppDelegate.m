@@ -54,11 +54,10 @@ static int const TICKS_PER_BUFFER = 8;//minimum libpd will allow, also what filt
     
     [self setupAudioEngine];
     
-    
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     // Override point for customization after application launch.
-   // self.rootController = [[RootViewController alloc]init];
-   // self.window.rootViewController = self.rootController;
+    self.rootController = [[ViewController alloc]init];
+    self.window.rootViewController = self.rootController;
     [self.window makeKeyAndVisible];
     return YES;
 }
@@ -99,6 +98,7 @@ static int const TICKS_PER_BUFFER = 8;//minimum libpd will allow, also what filt
     UInt32 channels;
     UInt32 size; //= sizeof(channels);
     OSStatus result = AudioSessionGetProperty(kAudioSessionProperty_CurrentHardwareInputNumberChannels, &size, &channels);
+    
     if ( result == kAudioSessionIncompatibleCategory ) {
         // Audio session error (rdar://13022588). Power-cycle audio session.
         AudioSessionSetActive(false);
