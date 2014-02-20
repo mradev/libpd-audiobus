@@ -23,8 +23,13 @@
 		2EB524EF18B4FEBD00411BF1 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 2EB524ED18B4FEBD00411BF1 /* InfoPlist.strings */; };
 		2EB524F118B4FEBD00411BF1 /* AudioBuslibpdTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 2EB524F018B4FEBD00411BF1 /* AudioBuslibpdTests.m */; };
 		2EB5251118B5107400411BF1 /* libpd-ios.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2EB5250018B5005000411BF1 /* libpd-ios.a */; };
-		2EB5251418B5108500411BF1 /* AudioUnit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2EB5251218B5108500411BF1 /* AudioUnit.framework */; };
 		2EB5251518B5108500411BF1 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2EB5251318B5108500411BF1 /* AVFoundation.framework */; };
+		2EB5251818B61E4A00411BF1 /* Test_Patch.pd in Resources */ = {isa = PBXBuildFile; fileRef = 2EB5251718B61E4A00411BF1 /* Test_Patch.pd */; };
+		2EB5251C18B61FE300411BF1 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2EB5251B18B61FE300411BF1 /* AudioToolbox.framework */; };
+		2EB5251E18B622E200411BF1 /* libAudiobus.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2EB5251D18B622E200411BF1 /* libAudiobus.a */; };
+		2EB5252018B6230C00411BF1 /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2EB5251F18B6230C00411BF1 /* Accelerate.framework */; };
+		2EB5252218B6231700411BF1 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2EB5252118B6231700411BF1 /* QuartzCore.framework */; };
+		2EB5252418B6231F00411BF1 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2EB5252318B6231F00411BF1 /* Security.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -48,6 +53,13 @@
 			proxyType = 2;
 			remoteGlobalIDString = 119013AB1486450C00086F19;
 			remoteInfo = "libpd-osx";
+		};
+		2EB5251918B61F8000411BF1 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 2EB524FA18B5004E00411BF1 /* libpd.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = D2AAC07D0554694100DB518D;
+			remoteInfo = "libpd-ios";
 		};
 /* End PBXContainerItemProxy section */
 
@@ -88,6 +100,12 @@
 		2EB5251018B50FBF00411BF1 /* Audiobus.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Audiobus.h; sourceTree = "<group>"; };
 		2EB5251218B5108500411BF1 /* AudioUnit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioUnit.framework; path = System/Library/Frameworks/AudioUnit.framework; sourceTree = SDKROOT; };
 		2EB5251318B5108500411BF1 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
+		2EB5251718B61E4A00411BF1 /* Test_Patch.pd */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Test_Patch.pd; sourceTree = "<group>"; };
+		2EB5251B18B61FE300411BF1 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
+		2EB5251D18B622E200411BF1 /* libAudiobus.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libAudiobus.a; path = Library/SDK/libAudiobus.a; sourceTree = "<group>"; };
+		2EB5251F18B6230C00411BF1 /* Accelerate.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accelerate.framework; path = System/Library/Frameworks/Accelerate.framework; sourceTree = SDKROOT; };
+		2EB5252118B6231700411BF1 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
+		2EB5252318B6231F00411BF1 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -95,10 +113,14 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				2EB5251418B5108500411BF1 /* AudioUnit.framework in Frameworks */,
+				2EB5252418B6231F00411BF1 /* Security.framework in Frameworks */,
+				2EB5252218B6231700411BF1 /* QuartzCore.framework in Frameworks */,
+				2EB5252018B6230C00411BF1 /* Accelerate.framework in Frameworks */,
+				2EB524C518B4FEBC00411BF1 /* CoreGraphics.framework in Frameworks */,
+				2EB5251E18B622E200411BF1 /* libAudiobus.a in Frameworks */,
+				2EB5251C18B61FE300411BF1 /* AudioToolbox.framework in Frameworks */,
 				2EB5251518B5108500411BF1 /* AVFoundation.framework in Frameworks */,
 				2EB5251118B5107400411BF1 /* libpd-ios.a in Frameworks */,
-				2EB524C518B4FEBC00411BF1 /* CoreGraphics.framework in Frameworks */,
 				2EB524C718B4FEBC00411BF1 /* UIKit.framework in Frameworks */,
 				2EB524C318B4FEBC00411BF1 /* Foundation.framework in Frameworks */,
 			);
@@ -141,6 +163,11 @@
 		2EB524C118B4FEBC00411BF1 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				2EB5252318B6231F00411BF1 /* Security.framework */,
+				2EB5252118B6231700411BF1 /* QuartzCore.framework */,
+				2EB5251F18B6230C00411BF1 /* Accelerate.framework */,
+				2EB5251D18B622E200411BF1 /* libAudiobus.a */,
+				2EB5251B18B61FE300411BF1 /* AudioToolbox.framework */,
 				2EB5251218B5108500411BF1 /* AudioUnit.framework */,
 				2EB5251318B5108500411BF1 /* AVFoundation.framework */,
 				2EB524C218B4FEBC00411BF1 /* Foundation.framework */,
@@ -154,6 +181,7 @@
 		2EB524C818B4FEBC00411BF1 /* AudioBuslibpd */ = {
 			isa = PBXGroup;
 			children = (
+				2EB5251618B61E4A00411BF1 /* Resources */,
 				2EB524D118B4FEBC00411BF1 /* AppDelegate.h */,
 				2EB524D218B4FEBC00411BF1 /* AppDelegate.m */,
 				2EB524D418B4FEBC00411BF1 /* Main_iPhone.storyboard */,
@@ -225,6 +253,14 @@
 			path = Library/SDK/Audiobus;
 			sourceTree = "<group>";
 		};
+		2EB5251618B61E4A00411BF1 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				2EB5251718B61E4A00411BF1 /* Test_Patch.pd */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -239,6 +275,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				2EB5251A18B61F8000411BF1 /* PBXTargetDependency */,
 			);
 			name = AudioBuslibpd;
 			productName = AudioBuslibpd;
@@ -333,6 +370,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				2EB524D918B4FEBC00411BF1 /* Main_iPad.storyboard in Resources */,
+				2EB5251818B61E4A00411BF1 /* Test_Patch.pd in Resources */,
 				2EB524DE18B4FEBD00411BF1 /* Images.xcassets in Resources */,
 				2EB524D618B4FEBC00411BF1 /* Main_iPhone.storyboard in Resources */,
 				2EB524CD18B4FEBC00411BF1 /* InfoPlist.strings in Resources */,
@@ -375,6 +413,11 @@
 			isa = PBXTargetDependency;
 			target = 2EB524BE18B4FEBC00411BF1 /* AudioBuslibpd */;
 			targetProxy = 2EB524E818B4FEBD00411BF1 /* PBXContainerItemProxy */;
+		};
+		2EB5251A18B61F8000411BF1 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = "libpd-ios";
+			targetProxy = 2EB5251918B61F8000411BF1 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -512,6 +555,10 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "AudioBuslibpd/AudioBuslibpd-Prefix.pch";
 				INFOPLIST_FILE = "AudioBuslibpd/AudioBuslibpd-Info.plist";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					/Users/mra/Documents/AppDevelopment/Examples/AudioBuslibpd/Library/SDK,
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				WRAPPER_EXTENSION = app;
@@ -528,6 +575,10 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "AudioBuslibpd/AudioBuslibpd-Prefix.pch";
 				INFOPLIST_FILE = "AudioBuslibpd/AudioBuslibpd-Info.plist";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					/Users/mra/Documents/AppDevelopment/Examples/AudioBuslibpd/Library/SDK,
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				WRAPPER_EXTENSION = app;

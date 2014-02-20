@@ -13,12 +13,20 @@
 #import "PdBase.h"
 #import "PdAudioController.h"
 #import "AudioHelpers.h"
+#import "ViewController.h"
 
-//Unique, change this for your app
-static NSString *const AUDIOBUS_API_KEY = @"MCoqKkEtRGVsYXkqKipBLURlbGF5LmF1ZGlvYnVzOi8v:CCFnbK1qi/mnQbv7Ln411DLsY6FCHdkWfRkF+8OGL3SLEAOBX2xpn1yRxg0NyGOLfCrK8ZpiqeTWp/0xfpUa88VLvkw92+27yZ0jvVqNMrNhQYkk9hQVsO8TS1TwSFaN";
-static NSString *const PD_PATCH = @"testaudiobus.pd";
+//Unique, get a temporary registration from http://developer.audiob.us/temporary-registration
+static NSString *const AUDIOBUS_API_KEY = @"MTM5NDEwOTc4MioqKkF1ZGlvQnVzbGlicGQqKipBdWRpb0J1c2xpYnBkLmF1ZGlvYnVzOi8v:Tf6vImI3uGLmGany/kcEQkJEdQSpFiZYWI4TF4MdjbFJaGKKzDN9YKXUC8a1vt7GxSFsMEJXi1EfDSKHRr9ICABTiJHwunkXu5ENXN16TKvGaM8g3naih+lZPRqALGW/";
+static NSString *const PD_PATCH = @"Test_Patch.pd";
 
-static NSString *const AUDIOBUS_URL_SCHEME = @"A-Delay.audiobus://";
+static NSString *const AUDIOBUS_URL_SCHEME = @"AudioBuslibpd.audiobus://";
+static NSString *const AUDIOBUS_INPUTPORT = @"Main-Input";
+static NSString *const AUDIOBUS_OUTPUTPORT = @"Main-Output";
+static NSString *const AUDIOBUS_INPUT_DESCRIPTION = @"Main App Input";
+static NSString *const AUDIOBUS_OUTPUT_DESCRIPTION = @"Main App Output";
+static NSString *const AUDIOBUS_FILTER_TITLE = @"Pd-Filter";
+static NSString *const AUDIOBUS_FILTERPORT_NAME = @"Main Filter";
+
 static float const SAMPLE_RATE = 44100;
 static int const TICKS_PER_BUFFER = 8;//minimum libpd will allow, also what filter sets
 
@@ -57,15 +65,14 @@ static int const TICKS_PER_BUFFER = 8;//minimum libpd will allow, also what filt
 
 - (void)setupAudioEngine {
     
-    NSLog(@"%@ UISC", NSStringFromCGRect([UIScreen mainScreen].bounds));
-    
-    //launch PD Sound Engine
+    //libpd configuration
     self.pdaudioController = [[PdAudioController alloc]init];
     [self.pdaudioController configurePlaybackWithSampleRate:SAMPLE_RATE
-                                         numberChannels:2
-                                           inputEnabled:YES
-                                          mixingEnabled:YES];
- 
+                                             numberChannels:2
+                                               inputEnabled:YES
+                                              mixingEnabled:YES];
+     
+     //ticks completion handler, store ticks set in property
     [self.pdaudioController configureTicksPerBuffer:TICKS_PER_BUFFER withCompletionHandler:^(int ticksPerBufferSet, PdAudioStatus status) {
         switch (status) {
             case PdAudioError:
@@ -81,14 +88,14 @@ static int const TICKS_PER_BUFFER = 8;//minimum libpd will allow, also what filt
                 break;
         }
     }];
-    
+    //set audio active
     self.pdaudioController.active = YES;
     
     //open pd patch
     [PdBase openFile:PD_PATCH path:[[NSBundle mainBundle] bundlePath]];
 
 
-    //check for any audio issues restart audio if detected
+    //audioBus check for any audio issues restart audio if detected
     UInt32 channels;
     UInt32 size; //= sizeof(channels);
     OSStatus result = AudioSessionGetProperty(kAudioSessionProperty_CurrentHardwareInputNumberChannels, &size, &channels);
@@ -107,7 +114,7 @@ static int const TICKS_PER_BUFFER = 8;//minimum libpd will allow, also what filt
     self.audiobusController = [[ABAudiobusController alloc]
                                initWithAppLaunchURL:[NSURL URLWithString:AUDIOBUS_URL_SCHEME]
                                apiKey:AUDIOBUS_API_KEY];
-    // Watch for connections
+    // Watch for connection changes
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(connectionsChanged:)
                                                  name:ABConnectionsChangedNotification
@@ -115,10 +122,12 @@ static int const TICKS_PER_BUFFER = 8;//minimum libpd will allow, also what filt
     
     
     //add ports for input and output
-    ABOutputPort *output = [self.audiobusController addOutputPortNamed:@"Audio Output"
-                                                                 title:NSLocalizedString(@"Main App Output", @"")];
-    ABInputPort *input = [self.audiobusController addInputPortNamed:@"Audio Input"
-                                                              title:NSLocalizedString(@"Main App Input", @"")];
+    ABInputPort *input = [self.audiobusController addInputPortNamed:AUDIOBUS_INPUTPORT
+                                                              title:NSLocalizedString(AUDIOBUS_INPUT_DESCRIPTION, nil)];
+    ABOutputPort *output = [self.audiobusController addOutputPortNamed:AUDIOBUS_OUTPUTPORT
+                                                                 title:NSLocalizedString(AUDIOBUS_OUTPUT_DESCRIPTION, nil)];
+   
+    //set input port attributes
     input.attributes = ABInputPortAttributePlaysLiveAudio;
     
     
@@ -128,28 +137,30 @@ static int const TICKS_PER_BUFFER = 8;//minimum libpd will allow, also what filt
                                                                                             output:output input:input];
     self.audiobusAudioUnitWrapper.useLowLatencyInputStream = YES;
     
-    
-    //add filter port
-    
+    //filter callback
     self.filterPort =  [self.audiobusController
-                        addFilterPortNamed:@"AudPassFilter" title:@"testpd" processBlock:^(AudioBufferList *audio, UInt32 frames, AudioTimeStamp *timestamp) {
-        // Filter the audio...
-        Float32 *auBuffer = (Float32 *)audio->mBuffers[0].mData;
-        int ticks = frames >>  log2int([PdBase getBlockSize]);
-        [PdBase processFloatWithInputBuffer:auBuffer outputBuffer:auBuffer ticks:ticks];
+                        addFilterPortNamed:AUDIOBUS_FILTERPORT_NAME
+                        title:AUDIOBUS_FILTER_TITLE
+                        processBlock:^(AudioBufferList *audio, UInt32 frames, AudioTimeStamp *timestamp) {
                             
+                            // Filter the audio...
+                            Float32 *auBuffer = (Float32 *)audio->mBuffers[0].mData;
+                            int ticks = frames >>  log2int([PdBase getBlockSize]);
+                            [PdBase processFloatWithInputBuffer:auBuffer outputBuffer:auBuffer ticks:ticks];
     }];
     
-    
+    //configure port
     int numberFrames = [PdBase getBlockSize] * self.ticks;
     self.filterPort.audioBufferSize = numberFrames;
-    self.filterPort.clientFormat = [self.pdaudioController.audioUnit ASBDForSampleRate:SAMPLE_RATE numberChannels:2];
+    self.filterPort.clientFormat = [self.pdaudioController.audioUnit
+                                    ASBDForSampleRate:SAMPLE_RATE
+                                    numberChannels:2];
     
     //add port to audio unit wrapper
     [self.audiobusAudioUnitWrapper addFilterPort:self.filterPort];
+    
     //print audio unit configuration
     [self printAudioSessionUnitInfo];
-    
 }
 
 - (void)printAudioSessionUnitInfo {
@@ -198,16 +209,8 @@ static int const TICKS_PER_BUFFER = 8;//minimum libpd will allow, also what filt
 
 - (void)connectionsChanged:(NSNotification*)notification {
     
-    
-    
-    if (ABFilterPortIsConnected(_filterPort)) {
-        
-        
-        NSLog(@"Filter Port Connected");
-        
-    }
-    
     self.pdaudioController.audioUnit.filterActive = ABFilterPortIsConnected(_filterPort);
+    if (self.pdaudioController.audioUnit.filterActive)NSLog(@"Filter Port Connected");
     
     // Cancel any scheduled shutdown
     [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(stopAudio) object:nil];
@@ -229,7 +232,6 @@ static int const TICKS_PER_BUFFER = 8;//minimum libpd will allow, also what filt
 }
 
 - (void)stopAudio {
-    
     self.pdaudioController.active = NO;
 }
 
